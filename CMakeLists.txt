@@ -57,8 +57,6 @@ FOREACH (F ${S})
   LIST( APPEND HEADERS ${RF} )
 ENDFOREACH (F ${S})
 
-INCLUDE_DIRECTORIES( src )
-
 IF (WIN32)
   IF( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     IF ( NOT DEFINED BITS)
@@ -76,6 +74,11 @@ IF (WIN32)
 ENDIF()
 
 ADD_LIBRARY( ${TARGET} STATIC ${SOURCES} ${HEADERS} )
+
+target_include_directories(${TARGET} PRIVATE
+  ${PROJECT_SOURCE_DIR}/src)
+
+target_include_directories(${TARGET} INTERFACE "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>")
 
 IF( BUILD_EXECUTABLE )
   SET( EXECUTABLE testBiarc testDistance testG2 testG2plot testG2stat testG2stat2arc testG2statCLC testIntersect testPolyline testTriangle2D )
